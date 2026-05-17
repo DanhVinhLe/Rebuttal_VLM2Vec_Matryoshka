@@ -50,10 +50,10 @@ torchrun \
     --subset_name "ImageNet_1K" "N24News" "HatefulMemes" "VOC2007" "SUN397" \
     --dataset_split original \
     --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
-    --output_dir training/AdaptiveMRL_fastVLM_cls \
-    --per_device_train_batch_size "${PER_DEVICE_BATCH_SIZE}" \
-    --gradient_accumulation_steps "${GRAD_ACCUM_STEPS}" \
-    --learning_rate 3e-4 \
+    --output_dir training/AdaptiveMRL_fastVLM_cls2 \
+    --per_device_train_batch_size 16 \
+    --gradient_accumulation_steps 2 \
+    --learning_rate 5e-5 \
     --num_train_epochs 2 \
     --save_total_limit 5 \
     --logging_steps 1 \
@@ -61,14 +61,14 @@ torchrun \
     --seed 42 \
     --lr_scheduler_type cosine \
     --weight_decay 0.01 \
-    --warmup_ratio 0.08 \
+    --warmup_ratio 0.03 \
     --optimizer_name adamw \
     --image_resolution mid \
     --kd_loss_type adaptive_mrl_stage1 \
     --nested_dims 64 128 256 512 768 896 \
     --stage1_phase all \
     --stage1_projection_spec "896->768,768->512,512->256,256->128,128->64" \
-    --stage1_projection_weights "896->768:1.0,768->512:1.0,512->256:1.2,256->128:1.1,128->64:0.8" \
+    --stage1_projection_weights "896->768:1.0,768->512:1.0,512->256:1.2,256->128:1.1,128->64:1.0" \
     --align_l1_weight 1.0 \
     --full_dim_l1_weight 0.0 \
     --align_l1_weights "64:1.0,128:1.0,256:1.0,512:1.0,768:1.0" \

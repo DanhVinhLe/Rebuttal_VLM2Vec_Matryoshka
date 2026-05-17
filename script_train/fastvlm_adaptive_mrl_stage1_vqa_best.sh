@@ -45,25 +45,25 @@ torchrun \
     --subset_name OK-VQA A-OKVQA DocVQA InfographicsVQA ChartQA Visual7W \
     --dataset_split original \
     --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
-    --output_dir training/AdaptiveMRL_fastVLM_stage1_best \
+    --output_dir training/AdaptiveMRL_fastVLM_vqa \
     --per_device_train_batch_size 32 \
     --gradient_accumulation_steps 1 \
-    --learning_rate 3e-5 \
-    --num_train_epochs 1 \
+    --learning_rate 5e-5 \
+    --num_train_epochs 2 \
     --save_total_limit 5 \
     --logging_steps 1 \
     --save_strategy epoch \
     --seed 42 \
     --lr_scheduler_type cosine \
     --weight_decay 0.01 \
-    --warmup_ratio 0.08 \
+    --warmup_ratio 0.03 \
     --optimizer_name adamw \
     --image_resolution mid \
     --kd_loss_type adaptive_mrl_stage1 \
     --nested_dims 64 128 256 512 768 896 \
     --stage1_phase all \
     --stage1_projection_spec "896->768,768->512,512->256,256->128,128->64" \
-    --stage1_projection_weights "896->768:1.0,768->512:1.0,512->256:1.2,256->128:1.1,128->64:0.8" \
+    --stage1_projection_weights "896->768:1.0,768->512:1.0,512->256:1.2,256->128:1.1,128->64:1.0" \
     --align_l1_weight 1.0 \
     --full_dim_l1_weight 0.0 \
     --align_l1_weights "64:0.6,128:0.8,256:1.0,512:1.0,768:0.9" \
