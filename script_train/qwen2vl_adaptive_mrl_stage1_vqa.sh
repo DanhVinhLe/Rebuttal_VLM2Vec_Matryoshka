@@ -60,12 +60,12 @@ torchrun \
     --optimizer_name adamw \
     --image_resolution mid \
     --kd_loss_type adaptive_mrl_stage1 \
-    --nested_dims 64 128 256 512 768 1024 1536 \
+    --nested_dims 64 128 256 512 768 896 1536 \
     --stage1_phase all \
-    --stage1_projection_spec "1536->1024,1024->768,768->512,512->256,256->128,128->64" \
+    --stage1_projection_spec "1536->896,896->768,768->512,512->256,256->128,128->64" \
     --align_l1_weight 1.0 \
     --full_dim_l1_weight 0.0 \
-    --align_l1_weights "64:0.7,128:0.7,256:0.7,512:0.7,768:0.7,1024:0.7" \
+    --align_l1_weights "64:0.7,128:0.7,256:0.7,512:0.7,768:0.7,896:0.7" \
     --orthogonal_weight "${ORTHO_WEIGHT}" \
     --projection_orthogonal_map "${ORTHO_MAP}" \
     --spectrum_kl_weight 0.35 \
@@ -73,5 +73,4 @@ torchrun \
     --laplacian_tau 0.07 \
     --laplacian_k_eig 16 \
     --laplacian_top_k -1 \
-    --spectrum_kl_pair_weights "896->768:0.8,768->512:1.0,512->256:1.2,256->128:1.0,128->64:0.8" \
-    --laplacian_pair_weights "1536->1024:1.0,1024->768:1.0,768->512:1.0,512->256:1.0,256->128:0.9,128->64:0.8"
+    --laplacian_pair_weights "1536->896:1.0,896->768:1.0,768->512:1.0,512->256:1.0,256->128:0.9,128->64:0.8"
