@@ -1,15 +1,16 @@
+MODEL="DVLe/MRL_B3_Qwen2_2B_cls"
 python eval_mmeb.py \
-    --model_name ./training/AdaptiveMRL_fastVLM_cls2/checkpoint-epoch-1 \
-    --encode_output_path ./MMEB-evaloutputs/fastvlm_mrl_cls_new1/ \
+    --model_name "${MODEL}" \
+    --encode_output_path ./MMEB-evaloutputs/fastvlm_mrl_cls_qwen2_1/ \
     --pooling eos \
-    --model_backbone "llava_qwen2" \
+    --model_backbone "qwen2_vl" \
     --normalize True \
     --bf16 \
     --dataset_name TIGER-Lab/MMEB-eval \
     --subset_name  "ImageNet-1K" "N24News" "HatefulMemes" "VOC2007" "SUN397" \
     --dataset_split test \
-    --per_device_eval_batch_size 10 \
+    --per_device_eval_batch_size 4 \
     --image_resolution mid \
     --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/eval_images" \
     --tgt_prefix_mod \
-    --nested_dims 64 128 256 512 768 896
+    --nested_dims 64 128 256 512 768 1024 1536
