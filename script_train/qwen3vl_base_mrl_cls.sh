@@ -13,10 +13,10 @@ torchrun \
     --normalize True \
     --temperature 0.02 \
     --dataset_name "TIGER-Lab/MMEB-train" \
-    --subset_name "OK-VQA" "A-OKVQA" "DocVQA" "InfographicsVQA" "ChartQA" "Visual7W" \
+    --subset_name "ImageNet_1K" "N24News" "HatefulMemes" "VOC2007" "SUN397" \
     --dataset_split "original" \
     --image_dir "./MMEB-train" \
-    --output_dir "training/MRL_Qwen3_vqa" \
+    --output_dir "training/MRL_Qwen3_cls" \
     --per_device_train_batch_size 16 \
     --gradient_accumulation_steps 1 \
     --kd_loss_type "mrl" \
