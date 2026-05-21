@@ -15,18 +15,18 @@ torchrun \
     --dataset_name TIGER-Lab/MMEB-train \
     --subset_name OK-VQA A-OKVQA DocVQA InfographicsVQA ChartQA Visual7W \
     --dataset_split original \
-    --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
+    --image_dir "./MMEB-train" \
     --output_dir ./training/AdaptiveMRL_Qwen3_vqa \
     --per_device_train_batch_size 32 \
     --gradient_accumulation_steps 1 \
-    --learning_rate 3e-5 \
+    --learning_rate 5e-5 \
     --num_train_epochs 2 \
     --save_total_limit 2 \
     --logging_steps 1 \
     --save_strategy epoch \
     --seed 42 \
     --weight_decay 0.01 \
-    --warmup_ratio 0.08 \
+    --warmup_ratio 0.03 \
     --lr_scheduler_type cosine \
     --optimizer_name adamw \
     --image_resolution mid \
@@ -36,7 +36,7 @@ torchrun \
     --stage1_projection_spec "2048->1024,1024->768,768->512,512->256,256->128,128->64" \
     --align_l1_weight 1.0 \
     --full_dim_l1_weight 0.0 \
-    --align_l1_weights "64:0.6,128:0.8,256:0.8,512:0.9,768:1.0,1024:1.0" \
+    --align_l1_weights "64:0.7,128:0.7,256:0.7,512:0.7,768:0.7,1024:0.7" \
     --orthogonal_weight 0.001 \
     --projection_orthogonal_map "" \
     --spectrum_kl_weight 0.35 \
@@ -45,5 +45,5 @@ torchrun \
     --laplacian_k_eig 16 \
     --laplacian_top_k -1 \
     --spectrum_kl_pair_weights "2048->1024:1.0,1024->768:1.0,768->512:1.0,512->256:0.8,256->128:0.8,128->64:0.6" \
-    --laplacian_pair_weights "2048->1024:1.0,1024->768:1.0,768->512:1.0,768->512:1.0,512->256:1.0,256->128:1.0,128->64:0.9" \
-    
+    --laplacian_pair_weights "2048->1024:1.0,1024->768:1.0,768->512:1.0,512->256:1.0,256->128:0.9,128->64:0.8"
+
