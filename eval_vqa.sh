@@ -1,0 +1,15 @@
+python eval_mmeb.py \
+    --model_name ./training/AdaptiveMRL_fastVLM_vqa8/checkpoint-epoch-1 \
+    --encode_output_path ./MMEB-evaloutputs/fastvlm_mrl_vqa_new8/ \
+    --pooling eos \
+    --model_backbone "llava_qwen2" \
+    --normalize True \
+    --bf16 \
+    --dataset_name TIGER-Lab/MMEB-eval \
+    --subset_name  OK-VQA A-OKVQA DocVQA InfographicsVQA ChartQA Visual7W \
+    --dataset_split test \
+    --per_device_eval_batch_size 20 \
+    --image_resolution mid \
+    --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/eval_images" \
+    --tgt_prefix_mod \
+    --nested_dims 64 128 256 512 768 896
