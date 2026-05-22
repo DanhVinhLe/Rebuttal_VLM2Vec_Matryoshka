@@ -111,8 +111,9 @@ class OneModelTrainer(nn.Module):
         )
 
     def _maybe_attach_projection_bank(self):
-        """Attach trainable stage-1 projection matrices for adaptive_mrl_stage1."""
-        if getattr(self.training_args, "kd_loss_type", "") != "adaptive_mrl_stage1":
+        """Attach trainable stage-1 projection matrices for projection-based adaptive MRL losses."""
+        projection_bank_losses = {"adaptive_mrl_stage1", "adaptive_mrl_projection_only"}
+        if getattr(self.training_args, "kd_loss_type", "") not in projection_bank_losses:
             return
 
         nested_dims = getattr(self.training_args, "nested_dims", None) or [64, 128, 256, 512, 768, 1024]
