@@ -15,7 +15,7 @@ torchrun \
     --dataset_name TIGER-Lab/MMEB-train \
     --subset_name OK-VQA A-OKVQA DocVQA InfographicsVQA ChartQA Visual7W \
     --dataset_split original \
-    --image_dir "./MMEB-train" \
+    --image_dir "vlm2vec_train/MMEB-train" \
     --output_dir ./training/AdaptiveMRL_Qwen3_vqa \
     --per_device_train_batch_size 32 \
     --gradient_accumulation_steps 1 \
