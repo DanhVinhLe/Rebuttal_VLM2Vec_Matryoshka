@@ -11,7 +11,7 @@ from src.model.processor import LLAVA_NEXT, QWEN2_VL, PHI3V, get_backbone_name, 
 
 from src.arguments import ModelArguments
 from src.model.processor import LLAVA_NEXT, QWEN2_VL, PHI3V, get_backbone_name, print_master, QWEN2_5_VL, \
-    QWEN2_VL_TOKENSELECTION, backbone2model, GME, VLM_IMAGE_TOKENS, LamRA, COLPALI, INTERN_VL3, LLAVA_ONEVISION, QWEN3_VL, SMOLVLM
+    QWEN2_VL_TOKENSELECTION, backbone2model, GME, VLM_IMAGE_TOKENS, LamRA, COLPALI, INTERN_VL3, LLAVA_ONEVISION, QWEN3_VL
 from src.model.vlm_backbone.colpali import ColPali
 from src.model.vlm_backbone.gme.gme_inference import GmeQwen2VL
 from src.model.vlm_backbone.lamra.lamra_inference import LamRAQwen2VL
@@ -132,7 +132,7 @@ class MMEBModel(nn.Module):
             if hasattr(input, 'pixel_values'):
                 input['pixel_values'] = input['pixel_values'].squeeze(1)
                 input['image_sizes'] = input['image_sizes'].squeeze(1)
-            request_hidden_states = output_hidden_states or getattr(self, "model_backbone", None) in [LLAVA_NEXT, LLAVA_ONEVISION, LLAVA_QWEN2, QWEN2_VL, SMOLVLM]
+            request_hidden_states = output_hidden_states or getattr(self, "model_backbone", None) in [LLAVA_NEXT, LLAVA_ONEVISION, LLAVA_QWEN2, QWEN2_VL]
             hidden_states = self.encoder(**input, return_dict=True, output_hidden_states=request_hidden_states, output_attentions=output_attentions)
             # add for image feature
             if hasattr(hidden_states, 'batch_image_embeds'):
@@ -147,7 +147,7 @@ class MMEBModel(nn.Module):
             return pooled_output, image_features, attention_matrix, output_hidden_states
         elif getattr(self, "model_backbone", None) in [LLAVA_QWEN2, QWEN2_VL]:
             # print("Encoding input for FastVLM model backbone")
-            request_hidden_states = output_hidden_states or getattr(self, "model_backbone", None) in [LLAVA_NEXT, LLAVA_ONEVISION, LLAVA_QWEN2, QWEN2_VL, SMOLVLM]
+            request_hidden_states = output_hidden_states or getattr(self, "model_backbone", None) in [LLAVA_NEXT, LLAVA_ONEVISION, LLAVA_QWEN2, QWEN2_VL]
             hidden_states = self.encoder(**input, return_dict=True, output_hidden_states=request_hidden_states, output_attentions=output_attentions)
             if hasattr(hidden_states, 'batch_image_embeds'):
                 image_features = hidden_states.batch_image_embeds
@@ -160,7 +160,7 @@ class MMEBModel(nn.Module):
 
             return pooled_output, image_features, attention_matrix, output_hidden_states
         elif getattr(self, "model_backbone", None) in [QWEN3_VL]:
-            request_hidden_states = output_hidden_states or getattr(self, "model_backbone", None) in [LLAVA_NEXT, LLAVA_ONEVISION, LLAVA_QWEN2, QWEN2_VL, SMOLVLM]
+            request_hidden_states = output_hidden_states or getattr(self, "model_backbone", None) in [LLAVA_NEXT, LLAVA_ONEVISION, LLAVA_QWEN2, QWEN2_VL]
             hidden_states = self.encoder(**input, return_dict=True, output_hidden_states=request_hidden_states, output_attentions=output_attentions)
             output_hidden_states = hidden_states.hidden_states if output_hidden_states else None
             
@@ -170,17 +170,6 @@ class MMEBModel(nn.Module):
             # print("pooled_output shape:", pooled_output.shape)
             # print("last_hidden_state shape:", last_hidden_state.shape)
             return pooled_output, None, attention_matrix, output_hidden_states
-        elif getattr(self, "model_backbone", None) == SMOLVLM:
-            request_hidden_states = output_hidden_states or getattr(self, "model_backbone", None) in [LLAVA_NEXT, LLAVA_ONEVISION, LLAVA_QWEN2, QWEN2_VL, SMOLVLM]
-            hidden_states = self.encoder(**input, return_dict=True, output_hidden_states=request_hidden_states, output_attentions=output_attentions)
-            output_hidden_states = hidden_states.hidden_states if output_hidden_states else None
-            last_hidden_state = self._extract_last_hidden_state(hidden_states)
-            attention_matrix = hidden_states.attentions if hasattr(hidden_states, 'attentions') else None
-            pooled_output = self._pooling(last_hidden_state, input['attention_mask'])
-            image_features = hidden_states.image_hidden_states if hasattr(hidden_states, 'image_hidden_states') else None
-            print(f"SMOLVLM output shapes: pooled_output={pooled_output.shape}, image_features={image_features.shape if image_features is not None else None}")
-            print(f"SMOLVLM attention matrix length: {len(attention_matrix) if attention_matrix is not None else None}")
-            return pooled_output, image_features, attention_matrix, output_hidden_states
         else:
             # import ipdb; ipdb.set_trace()
             hidden_states = self.encoder(**input, return_dict=True, output_hidden_states=output_hidden_states, output_attentions=output_attentions)
@@ -296,17 +285,6 @@ class MMEBModel(nn.Module):
                 config=config, 
                 torch_dtype=torch.bfloat16,
                 low_cpu_mem_usage=True
-            )
-            
-        elif model_backbone in [SMOLVLM]:
-            print("Build model with SmolVLM")
-            config._attn_implementation = "eager"
-            config.use_cache = False
-            base_model = backbone2model[model_backbone].from_pretrained(
-                model_args.model_name,
-                config=config,
-                torch_dtype=torch.bfloat16,
-                low_cpu_mem_usage=True,
             )
         elif model_backbone in [INTERN_VL3]:
             config._attn_implementation = "eager"
@@ -521,15 +499,6 @@ class MMEBModel(nn.Module):
         elif model_args.model_backbone == COLPALI:
             base_model = ColPali.from_pretrained(model_args.model_name)
             setattr(base_model, 'config', config)
-        elif model_args.model_backbone == SMOLVLM:
-            config._attn_implementation = "eager"
-            config.use_cache = False
-            base_model = backbone2model[model_args.model_backbone].from_pretrained(
-                model_args.model_name,
-                config=config,
-                torch_dtype=torch.bfloat16,
-                low_cpu_mem_usage=True,
-            )
         else:
             # Loading external base model from HF
             config = AutoConfig.from_pretrained(model_args.model_name, trust_remote_code=True)
