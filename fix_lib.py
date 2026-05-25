@@ -1,9 +1,9 @@
 import os
 
-file_path = "/home/gdi-user/miniconda3/envs/vlm/lib/python3.11/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py"
+file_path = "/home/gdi-user/miniconda3/envs/vlm/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py"
 
-start_line = 140
-end_line = 145
+start_line = 139
+end_line = 143
 
 with open(file_path, "r") as f:
     lines = f.readlines()
