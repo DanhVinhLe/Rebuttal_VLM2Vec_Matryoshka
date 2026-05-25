@@ -3,7 +3,7 @@
 ```bash
 apt-get update
 apt-get upgrade -y
-cd VLM_Embed
+cd VLM_Embed_Matryoshka
 python -m venv vlm
 source vlm/bin/activate
 ```
@@ -14,13 +14,13 @@ pip install -r requirements.txt
 ## Download dataset
 1. Download the eval image file zip from huggingface (`optional`) 
 ```bash
-cd VLM_Embed
+cd VLM_Embed_Matryoshka
 wget https://huggingface.co/datasets/TIGER-Lab/MMEB-eval/resolve/main/images.zip
 unzip images.zip -d eval_images/
 ```
 2. Download train image, it can take > 1 hour to download
 ```bash
-cd VLM_Embed
+cd VLM_Embed_Matryoshka
 bash download_traindata.sh
 bash download_traindata_2.sh
 ```
@@ -28,7 +28,7 @@ bash download_traindata_2.sh
 
 Because of the error of code in **Transformers library**, run the following script to find the error and comment some lines: 
 
-Just comment the following code, from line 140 to 143 in file **/vlm/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py**: 
+Just comment the following code, from line 139 to 143 in file **/vlm/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py**: 
 ```python
 if size is not None and ("shortest_edge" not in size or "longest_edge" not in size):
     raise ValueError("size must contain 'shortest_edge' and 'longest_edge' keys.")
@@ -43,89 +43,10 @@ python fix_lib.py
 ## Training
 
 Just run the scripts in folder `scripts`
-- For run RKD: 
+- For run training: 
 ```bash
-bash scripts/train_RKD.sh
-bash scripts/train_distill_propose_V.sh
+bash script_train/fastvlm_adaptive_mrl_stage1_cls_best.sh
 ```
-
-### Adaptive Matryoshka Stage-1: projection spec usage
-
-For `--kd_loss_type adaptive_mrl_stage1`, you can explicitly control which projection matrices are trained with:
-
-- `--stage1_projection_spec`: projection edges (`src_dim->dst_dim`)
-- `--stage1_projection_weights`: optional per-edge loss weights
-
-#### 1) Projection graph format
-
-Use comma-separated pairs, each pair must be `larger_dim->smaller_dim` (or `larger_dim:smaller_dim`):
-
-```bash
---stage1_projection_spec "2048->1024,2048->512,1024->512,1024->256,512->256,256->64"
-```
-
-This allows multiple larger dims projecting to the same smaller dim (for example both `2048->512` and `1024->512`).
-
-If `--stage1_projection_spec ""` (empty), training defaults to **all valid larger->smaller pairs** from `--nested_dims` plus the model full dim.
-
-#### 2) Per-edge weight format
-
-Use comma-separated weighted edges:
-
-```bash
---stage1_projection_weights "2048->1024:1.0,2048->512:0.7,1024->512:1.2,1024->256:0.9"
-```
-
-Any edge not listed gets default weight `1.0`.
-Likewise, if an edge is not listed in `--orthogonal_pair_weights`, that edge uses orthogonal pair weight `1.0` and still uses the global `--orthogonal_weight`.
-
-#### 3) Example command snippet
-
-```bash
---kd_loss_type adaptive_mrl_stage1 \
---nested_dims 64 128 256 512 1024 2048 \
---stage1_phase all \
---stage1_projection_spec "2048->1024,2048->512,1024->512,1024->256,512->256,256->128,128->64" \
---stage1_projection_weights "2048->1024:1.0,2048->512:0.8,1024->512:1.0,1024->256:0.8,512->256:1.0,256->128:1.0,128->64:1.0" \
---orthogonal_weight 0.01
-```
-
-Orthogonality regularization is still applied per active projection edge.
-
-
-### FastVLM adaptive recommended presets (same batch size and epochs)
-
-If you want better stability/performance while **keeping the same batch size and epoch count** as the current FastVLM adaptive scripts, use:
-
-```bash
-bash script_train/fastvlm_adaptive_mrl_stage1_vqa_best.sh
-bash script_train/fastvlm_adaptive_router_stage2_vqa_best.sh
-```
-
-These presets keep:
-- Stage-1: `per_device_train_batch_size=32`, `num_train_epochs=2`
-- Stage-2: `per_device_train_batch_size=64`, `num_train_epochs=2`
-
-while tuning learning-rate schedule and adaptive-loss/router hyperparameters for stronger retrieval quality.
-
-To use a projection map **different from Cayley** in Stage-1, set `ORTHO_MAP` when launching:
-
-```bash
-ORTHO_MAP=matrix_exp bash script_train/fastvlm_adaptive_mrl_stage1_vqa_best.sh
-```
-
-Supported values are `matrix_exp`, `cayley`, `cayley_safe`, or empty (`""`) to disable map-based reparameterization.
-
-To reproduce the **previous non-Cayley orthogonal-loss behavior** (the one that uses orthogonal loss), run:
-
-```bash
-USE_PREVIOUS_ORTHO_LOSS=1 bash script_train/fastvlm_adaptive_mrl_stage1_vqa_best.sh
-```
-
-This compatibility mode applies `ORTHO_MAP=""` and `ORTHO_WEIGHT=0.01`, i.e. no map-based reparameterization and explicit orthogonal-loss regularization.
-
-(`USE_PREVIOUS_ORTHO=1` is kept as a backward-compat alias.)
-
 ## Inference & Evaluation
 1. To evaluate our model on an MMEB dataset (e.g., MSCOCO_i2t), run:
 ```bash 
