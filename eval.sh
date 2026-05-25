@@ -1,9 +1,9 @@
-MODEL="DVLe/MRL_B3_Qwen2_2B_cls"
+MODEL="training/AdaptiveMRL_fastVLM_cls3/checkpoint-epoch-0"
 python eval_mmeb.py \
     --model_name "${MODEL}" \
-    --encode_output_path ./MMEB-evaloutputs/fastvlm_mrl_cls_qwen2_1/ \
+    --encode_output_path ./MMEB-evaloutputs/fastvlm_mrl_cls_1/ \
     --pooling eos \
-    --model_backbone "qwen2_vl" \
+    --model_backbone "llava_qwen2" \
     --normalize True \
     --bf16 \
     --dataset_name TIGER-Lab/MMEB-eval \
@@ -13,4 +13,4 @@ python eval_mmeb.py \
     --image_resolution mid \
     --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/eval_images" \
     --tgt_prefix_mod \
-    --nested_dims 64 128 256 512 768 1024 1536
+    --nested_dims 64 128 256 512 768 896

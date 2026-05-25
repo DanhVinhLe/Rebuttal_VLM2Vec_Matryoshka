@@ -1,5 +1,5 @@
 python eval_mmeb.py \
-    --model_name ./training/AdaptiveMRL_fastVLM_vqa10/checkpoint-epoch-1 \
+    --model_name ./training/AdaptiveMRL_fastVLM_vqa11/checkpoint-epoch-0 \
     --encode_output_path ./MMEB-evaloutputs/fastvlm_mrl_vqa_new10/ \
     --pooling eos \
     --model_backbone "llava_qwen2" \
