@@ -28,7 +28,7 @@ bash download_traindata_2.sh
 
 Because of the error of code in **Transformers library**, run the following script to find the error and comment some lines: 
 
-Just comment the following code, from line 140 to 143 in file **/vlm/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py**: 
+Just comment the following code, from line 139 to 143 in file **/vlm/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py**: 
 ```python
 if size is not None and ("shortest_edge" not in size or "longest_edge" not in size):
     raise ValueError("size must contain 'shortest_edge' and 'longest_edge' keys.")
