@@ -42,7 +42,7 @@ python fix_lib.py
 
 ## Training
 
-Just run the 8 scripts in folder `scripts`
+Just run the 8 scripts in folder `script_train`
 - For run training: 
 ```bash
 bash fastvlm_adaptive_mrl_stage1_cls_0.5_0.1.sh
