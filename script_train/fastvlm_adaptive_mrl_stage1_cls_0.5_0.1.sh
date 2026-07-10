@@ -50,7 +50,7 @@ torchrun \
     --subset_name "ImageNet_1K" "N24News" "HatefulMemes" "VOC2007" "SUN397" \
     --dataset_split original \
     --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
-    --output_dir training/AdaptiveMRL_fastVLM_cls3 \
+    --output_dir training/fastvlm_adaptive_mrl_stage1_cls_0.5_0.1 \
     --per_device_train_batch_size 16 \
     --gradient_accumulation_steps 1 \
     --learning_rate 5e-5 \

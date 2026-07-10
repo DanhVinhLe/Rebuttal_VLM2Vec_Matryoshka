@@ -1,7 +1,7 @@
-MODEL="training/fastvlm_adaptive_mrl_stage1_cls_0.5_0.1/checkpoint-epoch-1"
+MODEL="training/fastvlm_adaptive_mrl_stage1_cls_0.7_0.5/checkpoint-epoch-1"
 python eval_mmeb.py \
     --model_name "${MODEL}" \
-    --encode_output_path ./MMEB-evaloutputs/cls_0.5_0.1/ \
+    --encode_output_path ./MMEB-evaloutputs/cls_0.7_0.5/ \
     --pooling eos \
     --model_backbone "llava_qwen2" \
     --normalize True \

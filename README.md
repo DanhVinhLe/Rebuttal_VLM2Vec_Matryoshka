@@ -58,7 +58,15 @@ bash fastvlm_adaptive_mrl_stage1_cls_1.0_0.5.sh
 1. To evaluate our model on an MMEB dataset (e.g., MSCOCO_i2t), run (use correct training point):
 ```bash 
 bash eval.sh
+bash eval2.sh
+bash eval3.sh
+bash eval4.sh
+bash eval5.sh
+bash eval6.sh
+bash eval7.sh
+bash eval8.sh
 ```
+Finally, zip json folder ./MMEB-evaloutputs
 
 ## Acknowledgement
 - We have adapted code from [VLM2Vec]([https://github.com/TIGER-AI-Lab/VLM2Vec]) and [B3](https://github.com/raghavlite/B3)
