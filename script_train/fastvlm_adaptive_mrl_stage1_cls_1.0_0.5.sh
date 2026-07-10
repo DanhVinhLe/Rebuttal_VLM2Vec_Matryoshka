@@ -73,7 +73,7 @@ torchrun \
     --align_l1_weights "64:0.7,128:0.7,256:0.7,512:0.7,768:0.7" \
     --orthogonal_weight 0.001 \
     --projection_orthogonal_map "" \
-    --spectrum_kl_weight 0.3 \
+    --spectrum_kl_weight 0.5 \
     --spectrum_loss_type laplacian_kl \
     --laplacian_tau 0.07 \
     --laplacian_k_eig 16 \

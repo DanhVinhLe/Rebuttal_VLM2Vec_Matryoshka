@@ -42,13 +42,20 @@ python fix_lib.py
 
 ## Training
 
-Just run the scripts in folder `scripts`
+Just run the 8 scripts in folder `scripts`
 - For run training: 
 ```bash
-bash script_train/fastvlm_adaptive_mrl_stage1_cls_best.sh
+bash fastvlm_adaptive_mrl_stage1_cls_0.5_0.1.sh
+bash fastvlm_adaptive_mrl_stage1_cls_0.5_0.3.sh
+bash fastvlm_adaptive_mrl_stage1_cls_0.5_0.5.sh
+bash fastvlm_adaptive_mrl_stage1_cls_0.7_0.1.sh
+bash fastvlm_adaptive_mrl_stage1_cls_0.7_0.3.sh
+bash fastvlm_adaptive_mrl_stage1_cls_0.7_0.5.sh
+bash fastvlm_adaptive_mrl_stage1_cls_1.0_0.1.sh
+bash fastvlm_adaptive_mrl_stage1_cls_1.0_0.5.sh
 ```
 ## Inference & Evaluation
-1. To evaluate our model on an MMEB dataset (e.g., MSCOCO_i2t), run:
+1. To evaluate our model on an MMEB dataset (e.g., MSCOCO_i2t), run (use correct training point):
 ```bash 
 bash eval.sh
 ```
