@@ -32,7 +32,7 @@ fi
 
 torchrun \
     --standalone \
-    --nproc_per_node=1 \
+    --nproc_per_node=4 \
     --master_port=29512 \
     train_ddp_one_model.py \
     --lora \
@@ -49,9 +49,9 @@ torchrun \
     --dataset_name TIGER-Lab/MMEB-train \
     --subset_name "ImageNet_1K" "N24News" "HatefulMemes" "VOC2007" "SUN397" \
     --dataset_split original \
-    --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
+    --image_dir "vlm2vec_train/MMEB-train" \
     --output_dir training/AdaptiveMRL_fastVLM_cls3 \
-    --per_device_train_batch_size 16 \
+    --per_device_train_batch_size 32 \
     --gradient_accumulation_steps 1 \
     --learning_rate 5e-5 \
     --num_train_epochs 2 \

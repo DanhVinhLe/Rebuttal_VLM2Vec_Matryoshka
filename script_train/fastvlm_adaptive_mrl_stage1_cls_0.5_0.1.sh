@@ -13,7 +13,7 @@
 
 ORTHO_MAP=""
 ORTHO_WEIGHT=0.001
-PER_DEVICE_BATCH_SIZE="${PER_DEVICE_BATCH_SIZE:-16}"
+PER_DEVICE_BATCH_SIZE="${PER_DEVICE_BATCH_SIZE:-32}"
 GRAD_ACCUM_STEPS="${GRAD_ACCUM_STEPS:-2}"
 
 # Compatibility mode for the previous non-Cayley orthogonal-loss setup.
@@ -32,7 +32,7 @@ fi
 
 torchrun \
     --standalone \
-    --nproc_per_node=8 \
+    --nproc_per_node=4 \
     train_ddp_one_model.py \
     --lora \
     --lora_r 64 \
@@ -47,9 +47,9 @@ torchrun \
     --dataset_name TIGER-Lab/MMEB-train \
     --subset_name "ImageNet_1K" "N24News" "HatefulMemes" "VOC2007" "SUN397" \
     --dataset_split original \
-    --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
+    --image_dir "vlm2vec_train/MMEB-train" \
     --output_dir training/fastvlm_adaptive_mrl_stage1_cls_0.5_0.1 \
-    --per_device_train_batch_size 2 \
+    --per_device_train_batch_size 64 \
     --gradient_accumulation_steps 1 \
     --learning_rate 5e-5 \
     --num_train_epochs 2 \
