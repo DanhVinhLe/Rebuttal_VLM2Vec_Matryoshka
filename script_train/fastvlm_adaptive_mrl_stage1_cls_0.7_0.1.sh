@@ -42,7 +42,6 @@ torchrun \
     --model_name apple/FastVLM-0.5B \
     --model_backbone llava_qwen2 \
     --bf16 \
-    --gradient_checkpointing \
     --pooling eos \
     --normalize True \
     --temperature 0.02 \
