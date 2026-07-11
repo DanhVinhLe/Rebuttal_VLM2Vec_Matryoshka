@@ -32,8 +32,7 @@ fi
 
 torchrun \
     --standalone \
-    --nproc_per_node=1 \
-    --master_port=29512 \
+    --nproc_per_node=8 \
     train_ddp_one_model.py \
     --lora \
     --lora_r 64 \
@@ -50,7 +49,7 @@ torchrun \
     --dataset_split original \
     --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
     --output_dir training/fastvlm_adaptive_mrl_stage1_cls_1.0_0.5 \
-    --per_device_train_batch_size 16 \
+    --per_device_train_batch_size 2 \
     --gradient_accumulation_steps 1 \
     --learning_rate 5e-5 \
     --num_train_epochs 2 \
