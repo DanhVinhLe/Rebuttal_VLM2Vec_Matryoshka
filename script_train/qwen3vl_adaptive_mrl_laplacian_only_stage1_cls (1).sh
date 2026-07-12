@@ -17,8 +17,8 @@ torchrun \
     --dataset_name TIGER-Lab/MMEB-train \
     --subset_name "ImageNet_1K" "N24News" "HatefulMemes" "VOC2007" "SUN397" \
     --dataset_split original \
-    --image_dir "./vlm2vec_train/MMEB-train" \
-    --output_dir training/AdaptiveMRL_fastVLM_cls_laplacian_only \
+    --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
+    --output_dir training/AdaptiveMRL_qwen3_cls_laplacian_only \
     --per_device_train_batch_size 16 \
     --gradient_accumulation_steps 1 \
     --learning_rate 5e-5 \

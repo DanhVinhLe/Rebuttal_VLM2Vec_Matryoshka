@@ -7,8 +7,8 @@ torchrun \
     --lora_r 64 \
     --lora_alpha 128 \
     --lora_dropout 0.05 \
-    --model_name apple/FastVLM-0.5B \
-    --model_backbone llava_qwen2 \
+    --model_name Qwen/Qwen3-VL-Embedding-2B \
+    --model_backbone qwen3_vl \
     --bf16 \
     --gradient_checkpointing \
     --pooling eos \
@@ -18,7 +18,7 @@ torchrun \
     --subset_name "ImageNet_1K" "N24News" "HatefulMemes" "VOC2007" "SUN397" \
     --dataset_split original \
     --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
-    --output_dir training/AdaptiveMRL_fastVLM_cls_projection_only \
+    --output_dir training/AdaptiveMRL_qwen3_cls_projection_only \
     --per_device_train_batch_size 16 \
     --gradient_accumulation_steps 1 \
     --learning_rate 5e-5 \
