@@ -1,6 +1,6 @@
 python eval_mmeb.py \
-    --model_name ./training/AdaptiveMRL_fastVLM_vqa11/checkpoint-epoch-0 \
-    --encode_output_path ./MMEB-evaloutputs/fastvlm_mrl_vqa_new10/ \
+    --model_name training/AdaptiveMRL_fastVLM_vqa_laplacian_only/checkpoint-epoch-1 \
+    --encode_output_path ./MMEB-evaloutputs/AdaptiveMRL_fastVLM_vqa_laplacian_only/ \
     --pooling eos \
     --model_backbone "llava_qwen2" \
     --normalize True \
@@ -10,6 +10,6 @@ python eval_mmeb.py \
     --dataset_split test \
     --per_device_eval_batch_size 32 \
     --image_resolution mid \
-    --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/eval_images" \
+    --image_dir "eval_images" \
     --tgt_prefix_mod \
     --nested_dims 64 128 256 512 768 896

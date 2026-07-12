@@ -11,6 +11,6 @@ python eval_mmeb.py \
     --dataset_split test \
     --per_device_eval_batch_size 4 \
     --image_resolution mid \
-    --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/eval_images" \
+    --image_dir "eval_images" \
     --tgt_prefix_mod \
     --nested_dims 64 128 256 512 768 896
