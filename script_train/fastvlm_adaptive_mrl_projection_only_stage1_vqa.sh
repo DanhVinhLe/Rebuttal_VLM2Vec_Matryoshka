@@ -1,0 +1,43 @@
+torchrun \
+    --standalone \
+    --nproc_per_node=1 \
+    --master_port=29522 \
+    train_ddp_one_model.py \
+    --lora \
+    --lora_r 64 \
+    --lora_alpha 128 \
+    --lora_dropout 0.05 \
+    --model_name apple/FastVLM-0.5B \
+    --model_backbone llava_qwen2 \
+    --bf16 \
+    --gradient_checkpointing \
+    --pooling eos \
+    --normalize True \
+    --temperature 0.02 \
+    --dataset_name TIGER-Lab/MMEB-train \
+    --subset_name OK-VQA A-OKVQA DocVQA InfographicsVQA ChartQA Visual7W \
+    --dataset_split original \
+    --image_dir "/home/gdi-user/enguyen/research_vllm/test/VLM_Embed/vlm2vec_train/MMEB-train" \
+    --output_dir training/AdaptiveMRL_fastVLM_vqa_projection_only \
+    --per_device_train_batch_size 16 \
+    --gradient_accumulation_steps 1 \
+    --learning_rate 5e-5 \
+    --num_train_epochs 2 \
+    --save_total_limit 5 \
+    --logging_steps 1 \
+    --save_strategy epoch \
+    --seed 42 \
+    --lr_scheduler_type cosine \
+    --weight_decay 0.01 \
+    --warmup_ratio 0.03 \
+    --optimizer_name adamw \
+    --image_resolution mid \
+    --kd_loss_type adaptive_mrl_projection_only \
+    --nested_dims 64 128 256 512 768 896 \
+    --stage1_phase all \
+    --stage1_projection_spec "896->768,768->512,512->256,256->128,128->64" \
+    --align_l1_weight 1.0 \
+    --full_dim_l1_weight 0.0 \
+    --align_l1_weights "64:0.7,128:0.7,256:0.7,512:0.7,768:0.7" \
+    --orthogonal_weight 0.001 \
+    --projection_orthogonal_map ""

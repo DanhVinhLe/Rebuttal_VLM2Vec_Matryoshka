@@ -1,0 +1,41 @@
+torchrun \
+    --standalone \
+    --nproc_per_node=1 \
+    --master_port=29523 \
+    train_ddp_one_model.py \
+    --lora \
+    --lora_r 64 \
+    --lora_alpha 128 \
+    --lora_dropout 0.05 \
+    --model_name Qwen/Qwen3-VL-Embedding-2B \
+    --model_backbone qwen3_vl \
+    --bf16 \
+    --gradient_checkpointing \
+    --pooling eos \
+    --normalize True \
+    --temperature 0.02 \
+    --dataset_name TIGER-Lab/MMEB-train \
+    --subset_name "ImageNet_1K" "N24News" "HatefulMemes" "VOC2007" "SUN397" \
+    --dataset_split original \
+    --image_dir "./vlm2vec_train/MMEB-train" \
+    --output_dir training/AdaptiveMRL_fastVLM_cls_laplacian_only \
+    --per_device_train_batch_size 16 \
+    --gradient_accumulation_steps 1 \
+    --learning_rate 5e-5 \
+    --num_train_epochs 2 \
+    --save_total_limit 5 \
+    --logging_steps 1 \
+    --save_strategy epoch \
+    --seed 42 \
+    --lr_scheduler_type cosine \
+    --weight_decay 0.01 \
+    --warmup_ratio 0.03 \
+    --optimizer_name adamw \
+    --image_resolution mid \
+    --kd_loss_type adaptive_mrl_laplacian_only \
+    --nested_dims 64 128 256 512 768 896 \
+    --spectrum_kl_weight 0.35 \
+    --laplacian_tau 0.07 \
+    --laplacian_k_eig 16 \
+    --laplacian_top_k -1 \
+    --laplacian_pair_weights "896->768:1.0,768->512:1.0,512->256:1.0,256->128:0.9,128->64:0.8"
