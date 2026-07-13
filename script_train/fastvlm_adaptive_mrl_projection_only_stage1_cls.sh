@@ -1,6 +1,6 @@
 torchrun \
     --standalone \
-    --nproc_per_node=1 \
+    --nproc_per_node=8 \
     --master_port=29522 \
     train_ddp_one_model.py \
     --lora \
